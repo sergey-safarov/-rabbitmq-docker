@@ -55,6 +55,8 @@ rabbitConfigKeys=(
 	default_pass
 	default_user
 	default_vhost
+	peer_discovery_hostname
+	cluster_partition_handling
 	vm_memory_high_watermark
 )
 fileConfigKeys=(
@@ -271,6 +273,19 @@ rabbit_env_config() {
 					false|no|0|'') rawVal='false' ;;
 					true|yes|1|*) rawVal='true' ;;
 				esac
+				;;
+
+			peer_discovery_hostname)
+				[ "$val" ] || continue
+				rabbit_set_config "cluster_formation.peer_discovery_backend" "rabbit_peer_discovery_dns"
+				rabbit_set_config "cluster_formation.dns.hostname" "$val"
+				continue
+				;;
+
+			cluster_partition_handling)
+				[ "$val" ] || continue
+				rabbit_set_config "cluster_partition_handling" "$val"
+				continue
 				;;
 
 			vm_memory_high_watermark) continue ;; # handled separately
