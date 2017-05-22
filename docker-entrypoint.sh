@@ -64,6 +64,8 @@ rabbitConfigKeys=(
 	default_user
 	default_vhost
 	hipe_compile
+	cluster_nodes
+	cluster_partition_handling
 	vm_memory_high_watermark
 )
 fileConfigKeys=(
@@ -220,6 +222,16 @@ rabbit_env_config() {
 
 			hipe_compile)
 				[ "$val" ] && rawVal='true' || rawVal='false'
+				;;
+
+			cluster_nodes)
+				[ "$val" ] || continue
+				rawVal="{['rabbit@$val'], disc}"
+				;;
+
+			cluster_partition_handling)
+				[ "$val" ] || continue
+				rawVal="$val"
 				;;
 
 			cacertfile|certfile|keyfile)
