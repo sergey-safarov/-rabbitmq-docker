@@ -224,7 +224,7 @@ RUN set -eux; \
 	su-exec rabbitmq rabbitmqctl list_ciphers; \
 	su-exec rabbitmq rabbitmq-plugins list; \
 # Added dig utility
-	apk add --no-cache bind-tools \
+	apk add --no-cache bind-tools; \
 # no stale cookies
 	rm "$RABBITMQ_DATA_DIR/.erlang.cookie"
 
