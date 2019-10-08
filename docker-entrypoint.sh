@@ -300,6 +300,16 @@ rabbit_env_config() {
 }
 
 if [ "$1" = 'rabbitmq-server' ] && [ "$shouldWriteConfig" ]; then
+	set +u
+	if [ ! -z "${RABBITMQ_PEER_DISCOVERY_HOSTNAME}" -a ! -z "${RABBITMQ_PEER_MIN}" ]; then
+		DNS_HOSTS=$(dig -q ${RABBITMQ_PEER_DISCOVERY_HOSTNAME} -t A | grep -e "^${RABBITMQ_PEER_DISCOVERY_HOSTNAME}"  | wc -l)
+		while [ ${DNS_HOSTS} -lt ${RABBITMQ_PEER_MIN} ]; do
+			DNS_HOSTS=$(dig -q ${RABBITMQ_PEER_DISCOVERY_HOSTNAME} -t A | grep -e "^${RABBITMQ_PEER_DISCOVERY_HOSTNAME}"  | wc -l)
+			echo "DNS name '${RABBITMQ_PEER_DISCOVERY_HOSTNAME}' resolved to ${DNS_HOSTS} hosts"
+			sleep 5
+		done
+	fi
+	set -u
 	rabbit_set_config 'loopback_users.guest' 'false'
 
 	# determine whether to set "vm_memory_high_watermark" (based on cgroups)
