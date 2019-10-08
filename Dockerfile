@@ -189,6 +189,7 @@ RUN set -eux; \
 	\
 	apk add --no-cache --virtual .build-deps \
 		ca-certificates \
+		bind-tools \
 		gnupg \
 		xz \
 	; \
