@@ -189,7 +189,6 @@ RUN set -eux; \
 	\
 	apk add --no-cache --virtual .build-deps \
 		ca-certificates \
-		bind-tools \
 		gnupg \
 		xz \
 	; \
@@ -224,6 +223,8 @@ RUN set -eux; \
 	su-exec rabbitmq rabbitmqctl help; \
 	su-exec rabbitmq rabbitmqctl list_ciphers; \
 	su-exec rabbitmq rabbitmq-plugins list; \
+# Added dig utility
+	apk add --no-cache bind-tools \
 # no stale cookies
 	rm "$RABBITMQ_DATA_DIR/.erlang.cookie"
 
